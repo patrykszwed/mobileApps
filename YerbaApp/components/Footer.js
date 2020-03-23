@@ -20,14 +20,11 @@ class Footer extends Component {
 
 const myStyles = StyleSheet.create({
   main: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignSelf: "center",
-    flex: 1,
     height: 20,
     width: 120,
     paddingTop: 225,
-    paddingBottom: 50
+    paddingBottom: 60,
+    flex: 1
   }
 });
 

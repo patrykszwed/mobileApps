@@ -9,7 +9,7 @@ class Products extends Component {
 
   render() {
     return (
-      <View style={myStyles.main}>
+      <View style={myStyles.container}>
         <Item
           itemName="Organic Yerba Mate"
           description="La Potente Energy"
@@ -40,8 +40,16 @@ class Products extends Component {
 }
 
 const myStyles = StyleSheet.create({
-  main: {
-    marginTop: 45
+  container: {
+    marginTop: 45,
+    flex: 10,
+    flexDirection: "column",
+    justifyContent: "center",
+    backgroundColor: "#fcfcfc",
+    padding: 10,
+    width: 300,
+    height: 300,
+    borderRadius: 14
   }
 });
 

@@ -43,7 +43,8 @@ const myStyles = StyleSheet.create({
     padding: 40,
     justifyContent: "space-between",
     backgroundColor: "white",
-    alignItems: "center"
+    alignItems: "center",
+    flex: 1
   },
   headerLeft: {
     flex: 1,
@@ -51,7 +52,7 @@ const myStyles = StyleSheet.create({
     justifyContent: "flex-start"
   },
   headerMiddle: {
-    flex: 1,
+    flex: 4,
     flexDirection: "row",
     justifyContent: "flex-start"
   },

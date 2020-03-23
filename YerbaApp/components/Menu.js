@@ -25,12 +25,10 @@ const myStyles = StyleSheet.create({
   main: {
     flexDirection: "row",
     justifyContent: "center",
-    alignSelf: "center",
-    flex: 1,
     height: 20,
     width: 120,
-    paddingTop: 5,
-    paddingBottom: 20
+    marginBottom: 40,
+    flex: 1
   }
 });
 

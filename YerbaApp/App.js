@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, Dimensions } from "react-native";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Products from "./components/Products";
@@ -20,8 +20,9 @@ class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    alignItems: "center"
+    flex: 8,
+    alignItems: "center",
+    flexDirection: "column"
   },
   main: {
     backgroundColor: "white"

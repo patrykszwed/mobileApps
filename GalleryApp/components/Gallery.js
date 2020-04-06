@@ -7,10 +7,12 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
+  Text
 } from "react-native";
 import * as MediaLibrary from "expo-media-library";
 import ImageViewer from "react-native-image-zoom-viewer";
+import NewPhotoButton from "./NewPhotoButton";
 
 const SCREEN_HEIGHT = Math.round(Dimensions.get("window").height);
 const SCREEN_WIDTH = Math.round(Dimensions.get("window").width);
@@ -23,17 +25,19 @@ class Gallery extends Component {
   };
 
   getPhotos = async () => {
+    console.log("getPhotos");
     await MediaLibrary.requestPermissionsAsync();
     let systemPhotos = await MediaLibrary.getAssetsAsync({
       mediaType: ["photo"],
       first: 50,
       sortBy: MediaLibrary.SortBy.creationTime
     });
-
+    systemPhotos.assets.forEach(photo => console.log(photo));
     const photos = systemPhotos.assets.map((photo, key) => ({
       url: photo.uri,
       index: key
     }));
+    console.log(photos.forEach(photo => console.log(photo.url)));
     this.setState({ photos });
   };
 
@@ -43,6 +47,10 @@ class Gallery extends Component {
 
   showModal = imageIndex => () => {
     this.setState({ modalVisible: true, imageIndex });
+  };
+
+  test = () => {
+    console.log("test");
   };
 
   render() {
@@ -89,6 +97,7 @@ class Gallery extends Component {
             numColumns={5}
           />
         )}
+        {photos.length > 0 && <NewPhotoButton reloadPhotos={this.getPhotos} />}
       </View>
     );
   }

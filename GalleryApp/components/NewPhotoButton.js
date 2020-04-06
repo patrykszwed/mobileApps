@@ -5,7 +5,7 @@ import {
   Modal,
   Button,
   TouchableOpacity,
-  Platform
+  Platform,
 } from "react-native";
 import * as Permissions from "expo-permissions";
 import { Camera } from "expo-camera";
@@ -18,14 +18,14 @@ const flashModeOrder = {
   off: "on",
   on: "auto",
   auto: "torch",
-  torch: "off"
+  torch: "off",
 };
 
 const flashIcons = {
   off: "flash-off",
   on: "flash-on",
   auto: "flash-auto",
-  torch: "highlight"
+  torch: "highlight",
 };
 
 const landmarkSize = 2;
@@ -33,7 +33,6 @@ const landmarkSize = 2;
 class NewPhotoButton extends Component {
   constructor(props) {
     super(props);
-    console.log("props.reloadPhotos", props.reloadPhotos);
     this.state = {
       flash: "off",
       zoom: 0,
@@ -53,14 +52,13 @@ class NewPhotoButton extends Component {
       showGallery: false,
       showMoreOptions: false,
       modalVisible: false,
-      reloadPhotos: props.reloadPhotos
+      reloadPhotos: props.reloadPhotos,
     };
     this.askForPermissions = this.askForPermissions.bind(this);
   }
 
   toggleView = () => {
     this.hideModal();
-    console.log("this.state.reloadPhotos", this.state.reloadPhotos);
     this.state.reloadPhotos();
     this.setState({ newPhotos: false });
   };
@@ -73,19 +71,18 @@ class NewPhotoButton extends Component {
 
   takePicture = () => {
     if (this.camera) {
-      this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
+      this.camera.takePictureAsync({
+        onPictureSaved: this.onPictureSaved,
+      });
     }
   };
 
-  onPictureSaved = async photo => {
-    console.log("FileSystem.documentDirectory", FileSystem.documentDirectory);
-    const album = await MediaLibrary.getAlbumAsync("-1739773001");
-    console.log("album", album);
-    // MediaLibrary.addAssetsToAlbumAsync([photo], album.);
-    await FileSystem.moveAsync({
-      from: photo.uri,
-      to: `${FileSystem.documentDirectory}photos/${Date.now()}.jpg`
-    });
+  onPictureSaved = async (photo) => {
+    const asset = await MediaLibrary.createAssetAsync(photo.uri);
+    const albumId = await MediaLibrary.getAlbumAsync("Camera").then(
+      (albumId) => albumId
+    );
+    await MediaLibrary.addAssetsToAlbumAsync([asset], albumId);
     this.setState({ newPhotos: true });
   };
 
@@ -104,7 +101,7 @@ class NewPhotoButton extends Component {
       this.setState({
         pictureSizes,
         pictureSizeId,
-        pictureSize: pictureSizes[pictureSizeId]
+        pictureSize: pictureSizes[pictureSizeId],
       });
     }
   };
@@ -114,21 +111,20 @@ class NewPhotoButton extends Component {
     await this.askForCameraRollPermissions();
     this.setState({
       permissionsGranted: status === "granted",
-      modalVisible: status === "granted"
+      modalVisible: status === "granted",
     });
   }
 
   componentDidMount() {
     FileSystem.makeDirectoryAsync(
       FileSystem.documentDirectory + "photos"
-    ).catch(e => {
+    ).catch((e) => {
       console.log(e, "Directory exists");
     });
   }
 
   async askForCameraRollPermissions() {
-    console.log("askForCameraRollPermissions");
-    const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+    await Permissions.askAsync(Permissions.CAMERA_ROLL);
   }
 
   renderTopBar = () => (
@@ -168,7 +164,7 @@ class NewPhotoButton extends Component {
   renderCamera = () => (
     <View style={{ flex: 1 }}>
       <Camera
-        ref={ref => {
+        ref={(ref) => {
           this.camera = ref;
         }}
         style={styles.camera}
@@ -182,12 +178,11 @@ class NewPhotoButton extends Component {
   );
 
   hideModal = () => {
-    console.log("this.state.reloadPhotos", this.state.reloadPhotos);
     this.state.reloadPhotos();
     this.setState({ modalVisible: false });
   };
 
-  showModal = imageIndex => () => {
+  showModal = (imageIndex) => () => {
     this.setState({ modalVisible: true, imageIndex });
   };
 
@@ -217,17 +212,17 @@ export default NewPhotoButton;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#1a1329"
+    backgroundColor: "#1a1329",
   },
   camera: {
     flex: 1,
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   topBar: {
     flex: 0.2,
     backgroundColor: "transparent",
     flexDirection: "row",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   bottomBar: {
     paddingBottom: 5,
@@ -235,18 +230,18 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     justifyContent: "space-between",
     flex: 0.12,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   noPermissions: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    padding: 10
+    padding: 10,
   },
   gallery: {
     flex: 1,
     flexDirection: "row",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
   },
   toggleButton: {
     flex: 0.25,
@@ -256,17 +251,17 @@ const styles = StyleSheet.create({
     marginTop: 20,
     padding: 5,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   autoFocusLabel: {
     fontSize: 20,
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   bottomButton: {
     flex: 0.3,
     height: 58,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   newPhotosDot: {
     position: "absolute",
@@ -275,7 +270,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: "#4630EB"
+    backgroundColor: "#4630EB",
   },
   options: {
     position: "absolute",
@@ -285,40 +280,40 @@ const styles = StyleSheet.create({
     height: 160,
     backgroundColor: "#000000BA",
     borderRadius: 4,
-    padding: 10
+    padding: 10,
   },
   detectors: {
     flex: 0.5,
     justifyContent: "space-around",
     alignItems: "center",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   pictureQualityLabel: {
     fontSize: 10,
     marginVertical: 3,
-    color: "white"
+    color: "white",
   },
   pictureSizeContainer: {
     flex: 0.5,
     alignItems: "center",
-    paddingTop: 10
+    paddingTop: 10,
   },
   pictureSizeChooser: {
     alignItems: "center",
     justifyContent: "space-between",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   pictureSizeLabel: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   facesContainer: {
     position: "absolute",
     bottom: 0,
     right: 0,
     left: 0,
-    top: 0
+    top: 0,
   },
   face: {
     padding: 10,
@@ -327,22 +322,22 @@ const styles = StyleSheet.create({
     position: "absolute",
     borderColor: "#FFD700",
     justifyContent: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)"
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   landmark: {
     width: 2,
     height: landmarkSize,
     position: "absolute",
-    backgroundColor: "red"
+    backgroundColor: "red",
   },
   faceText: {
     color: "#FFD700",
     fontWeight: "bold",
     textAlign: "center",
     margin: 10,
-    backgroundColor: "transparent"
+    backgroundColor: "transparent",
   },
   row: {
-    flexDirection: "row"
-  }
+    flexDirection: "row",
+  },
 });
